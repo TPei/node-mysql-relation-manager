@@ -1,0 +1,17 @@
+# node modules
+node_modules
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# additional stuff
+test-reports.xml
+npm-debug.log
+
+# local log files
+*.log

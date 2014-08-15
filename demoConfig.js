@@ -1,22 +1,9 @@
-node-mysql-relation-manager
-===========================
+/**
+ * @author TPei
+ * created: 15/08/14.
+ */
 
-resolves mysql relations
-
-###Imagine the following setup
-Table posts
-- id
-- title
-- text
-- user_id (foreign key (or not, doesn't matter if it is an actual foreign) targeting users.id
-
-Table users
-- id
-- username
-
-###Then you'd create a relation like this
-```js
-var TableRelationManager = require('mysql-relation-manager');
+var TableRelationManager = require('./TableRelationManager');
 
 // base table
 var Post = new TableRelationManager('posts')
@@ -34,4 +21,3 @@ Post.addInternalColumn('text');
 Post.addExternalColumn('user_id', 'users', 'id', ['username', 'id']);
 
 console.log(Post.generateQuery('select'));
-```

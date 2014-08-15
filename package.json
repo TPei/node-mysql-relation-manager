@@ -1,0 +1,37 @@
+{
+    "name": "mysql-relation-manager",
+    "description": "mysql query module modelling relations",
+    "version": "0.0.1",
+    "main": "mysql-relation-manager",
+    "keywords": [
+        "mysql",
+        "query",
+        "helper",
+        "builder",
+        "relation"
+    ],
+    "author": {
+        "name": "Thomas Peikert",
+        "email": "dragon5689@gmx.net"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/TPei/node-mysql-relation-manager.git"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://raw.githubusercontent.com/TPei/node-mysql-relation-manager/master/LICENSE"
+        }
+    ],
+    "bugs": {
+        "url": "https://github.com/TPei/node-mysql-relation-manager/issues"
+    },
+    "homepage": "https://github.com/TPei/node-mysql-relation-manager/",
+    "dependencies": {
+        "mocha": "1.21.x"
+    },
+    "scripts": {
+        "test": "./node_modules/.bin/mocha --recursive -R xunit test/ > test-reports.xml"
+    }
+}
