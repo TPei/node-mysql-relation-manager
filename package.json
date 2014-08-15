@@ -1,6 +1,6 @@
 {
     "name": "mysql-relation-manager",
-    "description": "mysql query module modelling relations",
+    "description": "module modelling  mysql relations",
     "version": "0.0.1",
     "main": "mysql-relation-manager",
     "keywords": [
