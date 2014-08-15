@@ -1,7 +1,8 @@
-node-mysql-relation-manager
-===========================
+mysql-relation-query
+====================
 
-resolves mysql relations
+###resolves mysql relations
+create a TableRelationManager, add internal and external columns and have it generate mysql queries, complete with joins and everything
 
 ###Imagine the following setup
 Table posts
@@ -16,7 +17,7 @@ Table users
 
 ###Then you'd create a relation like this
 ```js
-var TableRelationManager = require('mysql-relation-manager');
+var TableRelationManager = require('mysql-relation-query');
 
 // base table
 var Post = new TableRelationManager('posts')
@@ -35,3 +36,5 @@ Post.addExternalColumn('user_id', 'users', 'id', ['username', 'id']);
 
 console.log(Post.generateQuery('select'));
 ```
+would generate the following sql statement
+select posts.id, posts.title, posts.text, users.username as usersusername, users.id as usersid from posts join users on (posts.user_id = users.id)

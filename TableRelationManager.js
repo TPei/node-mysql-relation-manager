@@ -60,15 +60,20 @@ var TableRelationManager = function(tableOfOrigin) {
     this.generateQuery = function(queryType) {
         var query = queryType + ' ';
 
+
+        // if no internal nor external columns where given, simply select everything from table
         if(this.internalColumns.length == 0 && this.externalColumns.length == 0)
             return query + '* from ' + this.table;
 
+        // generate query for internal colums
         for(var i = 0; i < this.internalColumns.length; i++)
             query += this.internalColumns[i] + ', ';
 
+        // if no external columns where given we are done
         if(this.externalColumns.length == 0)
             return query.substring(0, query.length-2) + ' from ' + this.table;
 
+        // add select part for external columsn
         for(var i = 0; i < this.externalColumns.length; i++) {
             if(this.externalColumns[i].interestingColumns instanceof Array){
                 var columns = this.externalColumns[i].interestingColumns;
@@ -82,6 +87,7 @@ var TableRelationManager = function(tableOfOrigin) {
 
         query = query.substring(0, query.length-2) + ' from ' + this.table;
 
+        // add neccessary joins for external columns
         for(var i = 0; i < this.externalColumns.length; i++) {
             query = query  +
                 ' join ' + this.externalColumns[i].targetTable +
