@@ -1,7 +1,7 @@
 {
     "name": "mysql-relation-manager",
     "description": "module modelling  mysql relations",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "main": "mysql-relation-manager",
     "keywords": [
         "mysql",

@@ -1,5 +1,6 @@
 /**
- * @author TPei
+ * Skyfillers GmbH
+ * @author Thomas Peikert
  * created: 15/08/14.
  */
 
@@ -18,6 +19,33 @@ var TableRelation = function(sourceTable, sourceColumn, targetTable, targetRefer
     this.targetTable = targetTable;
     this.targetReferenceColumn = targetReferenceColumn;
     this.interestingColumns = interestingColumns;
+
+    /**
+     * sets targetTable and targetReferenceColumn of TableRelation
+     * @param {Object} tableAndColumn containing table and column to be set
+     * @returns {TableRelation} updated TableRelation
+     */
+    this.references = function (tableAndColumn) {
+        this.targetTable = tableAndColumn.table;
+        this.targetReferenceColumn = tableAndColumn.column;
+        return this;
+    }
+
+    /**
+     * sets interestingColumns of TableRelation
+     * @param fields array of columns
+     * @returns {TableRelation} updated TableRelation
+     */
+    this.returns = function (fields) {
+        this.interestingColumns = fields;
+        return this;
+    }
 }
+
+/*
+TableRelation.prototype.foreignKey = function (sourceColumn) {
+    this.sourceColumn = sourceColumn;
+    return this;
+}*/
 
 module.exports = TableRelation;

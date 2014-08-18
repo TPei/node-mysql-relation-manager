@@ -13,6 +13,59 @@ var mocha = require('mocha');
 var assert = require('assert');
 
 describe('TableRelationsManager', function(){
+    describe('#constructor', function() {
+        it('should return a TableRelationsManager', function(){
+            var TableRelationManager = require('../TableRelationManager');
+            var manager = new TableRelationManager('sourceTable');
+
+            assert.equal(true, manager.internalColumns instanceof Array);
+            assert.equal(true, manager.externalColumns instanceof Array);
+
+        });
+
+        it('should return a TableRelationsManager having a set table attribute', function(){
+            var TableRelationManager = require('../TableRelationManager');
+            var manager = new TableRelationManager('sourceTable');
+            assert.equal(manager.table, 'sourceTable');
+        });
+    });
+
+    describe('#addInternalColumn', function() {
+        it('should add internal columns appropriately', function(){
+            var TableRelationManager = require('../TableRelationManager');
+            var manager = new TableRelationManager('sourceTable');
+
+            manager.addInternalColumn('name');
+            assert.equal(manager.internalColumns[manager.internalColumns.length-1], 'sourceTable.name');
+        });
+    });
+
+    describe('#addForeignKey', function() {
+        it('should add an external relation accordingly', function(){
+            var TableRelationManager = require('../TableRelationManager');
+            var manager = new TableRelationManager('sourceTable');
+
+            manager.addForeignKey(
+                manager.foreignKey('sourceColumn')
+            );
+
+            assert.equal(manager.externalColumns[manager.externalColumns.length-1].sourceTable, 'sourceTable');
+            assert.equal(manager.externalColumns[manager.externalColumns.length-1].sourceColumn, 'sourceColumn');
+        });
+    });
+
+    describe('#foreignkey', function(){
+        it('should return a TableRelation', function(){
+            var TableRelationManager = require('../TableRelationManager');
+            var manager = new TableRelationManager('sourceTable');
+            var tableRelation = manager.foreignKey('sourceColumn');
+
+            assert.equal('sourceTable', tableRelation.sourceTable);
+            assert.equal('sourceColumn', tableRelation.sourceColumn);
+            assert.equal(undefined, tableRelation.targetReferenceColumn);
+        });
+    });
+
     describe('#generateQuery', function(){
         it('should be able to handle internal columns and solve multiple relations', function(){
             var TableRelationManager = require('../TableRelationManager');
@@ -31,7 +84,12 @@ describe('TableRelationsManager', function(){
 
             assert.equal(query, 'select posts.id, posts.title, posts.text, users.username as usersusername, users.id as usersid from posts join users on (posts.user_id = users.id) ');
 
-        })
+            var Configurer = require('../RelationsConfigurer');
+            var post = new Configurer(require('../demoConfig.json'));
+
+            var query = post.generateQuery('select');
+            assert.equal(query, 'select posts.id, posts.title, posts.text, users.id as usersid, users.username as usersusername, users.email as usersemail from posts join users on (posts.user_id = users.id) ');
+        });
 
         it('should work without any external relations', function(){
             var TableRelationManager = require('../TableRelationManager');

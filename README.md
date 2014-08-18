@@ -26,12 +26,26 @@ Post.addInternalColumn('id');
 Post.addInternalColumn('title');
 Post.addInternalColumn('text');
 
-// external column relations
-// name of column where key (usually primary key, usually id) of reference table is stored
-// referenced table
-// column (usually primary key, usually id) that is used as reference
-// columns I want given when querying that table
-Post.addExternalColumn('user_id', 'users', 'id', ['username', 'id']);
+/*
+ * external column relations
+ * @param sourceColumn the column in the baseTable where a reference column_value (usually id) is stored
+ * @param targetTable table that I want referenced by the sourceColumn's value
+ * @param targetReferenceColumn the column (usually id) that is used as reference value
+ * @param interestingColumns the columns you'll want returned when querying the foreign table
+ */
+Post.addExternalColumn('user_id', 'users', 'id', ['id', 'username', 'email']);
+
+// or
+Post.addForeignKey(
+    Post.foreignKey(user_id)
+        .references({table: users, column: id})
+        .returns(['id', 'username', 'email'])
+);
+
+// or simply generate the whole thing using a json config file
+// check demoConfig.json for a demo that would result in the same Relation as the two examples above
+var Configurer = require('../RelationsConfigurer');
+var Post = new Configurer(require('../demoConfig.json'));
 
 console.log(Post.generateQuery('select'));
 ```

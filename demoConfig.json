@@ -1,0 +1,23 @@
+{
+    "description": "table is base table, internal columns are columns you'll want returned when querying, external columns consist of the sourceColumn (column in base table) that references the target. targetTable is the referenced table,  targetReferenceColumn is the reference column in target table (usually is). columns is array of columns you'll want returned from the referenced table when querying.",
+    "demoResult": "this would create a post model with the fileds id, title and text and the column user_id referencing field id in table users, returning id, username and email when querying",
+
+    "table": "posts",
+    "internalColumns": [
+    "id",
+    "title",
+    "text"
+],
+    "relations": [
+    {
+        "sourceColumn": "user_id",
+        "targetTable": "users",
+        "targetReferenceColumn": "id",
+        "columns": [
+            "id",
+            "username",
+            "email"
+        ]
+    }
+    ]
+}

@@ -1,5 +1,6 @@
 /**
- * @author TPei
+ * Skyfillers GmbH
+ * @author Thomas Peikert
  * created: 15/08/14.
  */
 
@@ -7,7 +8,6 @@ var TableRelation = require('./TableRelation');
 
 /**
  * easily manage TableRelations
- * @param queryType {string} ['select', 'delete'] ...
  * @param tableOfOrigin {string} baseTable
  * @constructor
  */
@@ -34,7 +34,7 @@ var TableRelationManager = function(tableOfOrigin) {
 
     /**
      * adds an internal column
-     * @param column
+     * @param column to be returned when querying the table
      */
     this.addInternalColumn = function(column) {
         this.internalColumns.push(self.table + '.' + column);
@@ -45,11 +45,45 @@ var TableRelationManager = function(tableOfOrigin) {
      * and adds it to the external columns array
      * @param sourceColumn the column in the baseTable where a reference column_value (usually id) is stored
      * @param targetTable table that I want referenced by the sourceColumn's value
-     * @param targetColumn column I want to get when pulling the referenced table
-     * @param refColumn the column (usually id) that is used as reference value
+     * @param targetReferenceColumn the column (usually id) that is used as reference value
+     * @param interestingColumns the columns you'll want returned when querying the foreign table
      */
     this.addExternalColumn = function(sourceColumn, targetTable, targetReferenceColumn, interestingColumns) {
         this.externalColumns.push(new TableRelation(self.table, sourceColumn, targetTable, targetReferenceColumn, interestingColumns));
+    }
+
+    /**
+     * creates a new TableRelation using the baseTable
+     * and adds it to the external columns array
+     * @param object with the following parts:
+     * - sourceColumn the column in the baseTable where a reference column_value (usually id) is stored
+     * - targetTable table that I want referenced by the sourceColumn's value
+     * - targetColumn column I want to get when pulling the referenced table
+     * - refColumn the column (usually id) that is used as reference value
+     * @param interestingColumns the columns you'll want returned when querying the foreign table
+     */
+    this.addRelation = function(object, interestingColumns) {
+        this.externalColumns.push(new TableRelation(self.table, object.sourceColumn, object.targetTable, object.targetReferenceColumn, interestingColumns))
+    }
+
+    /**
+     * add a TableRelation to externalColumns array
+     * @param {TableRelation} tableRelation to be added
+     */
+    this.addForeignKey = function (tableRelation) {
+        this.externalColumns.push(tableRelation);
+    }
+
+    /**
+     * create and return a tableRelation with sourceColumn
+     * @param sourceColumn sourceColumn to be set in new TableRelation
+     * @returns {TableRelation} a new TableRelation with set sourceColumn
+     */
+    this.foreignKey = function (sourceColumn) {
+        var tableRelation = new TableRelation(self.table);
+        tableRelation.sourceColumn = sourceColumn;
+
+        return tableRelation;
     }
 
     /**
